@@ -10,7 +10,7 @@ export default function HomeScreen() {
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.title}>보고팡 B2C 홈</Text>
-      <Text style={styles.subtitle}>피그마 기준 섹션 컴포넌트와 데이터 레이어를 연결한 초기 상태입니다.</Text>
+      <Text style={styles.subtitle}>메인배너, 신규/추천 도서, 이벤트 섹션을 피그마 기준으로 분리했습니다.</Text>
 
       {homeFeedQuery.isLoading ? (
         <View style={styles.loadingBox}>
@@ -26,7 +26,7 @@ export default function HomeScreen() {
       ) : null}
 
       {homeFeedQuery.data?.sections.map((section) => (
-        <HomeSectionCard key={section.id} title={section.title} description={section.description} />
+        <HomeSectionCard key={section.id} section={section} />
       ))}
 
       <Link href="/book/sample-001" style={styles.cta}>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 20,
-    gap: 12,
+    gap: 16,
   },
   title: {
     fontSize: 26,
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: '#475569',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   loadingBox: {
     borderRadius: 12,
