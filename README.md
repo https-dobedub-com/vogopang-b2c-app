@@ -1,25 +1,30 @@
 # vogopang-b2c-app
 
-보고팡 B2C 모바일 앱 프로젝트 저장소입니다.
+Vogopang B2C mobile application built with Expo and React Native.
 
-## Planned Stack
+## Tech Stack
 
 - Expo
 - React Native
 - TypeScript
-- Expo Router
-- TanStack Query
-- Zustand
 
-## Goal
+## Run
 
-- Android / iPhone 동시 출시
-- React Native + Expo 기반 MVP 개발
-- 이후 필요 시 네이티브 확장
+```bash
+npm install
+npm run start
+```
 
-## Next Steps
+You can also run platform shortcuts:
 
-1. Expo 프로젝트 초기화
-2. 디자인 토큰 및 공통 컴포넌트 구성
-3. 홈 / 검색 / 상세 MVP 구현
-4. EAS Build / Submit 파이프라인 연결
+```bash
+npm run android
+npm run ios
+npm run web
+```
+
+## Notes
+
+- App config: `app.json`
+- Entry file: `App.tsx`
+- Native folders (`ios`, `android`) are ignored and can be generated later if needed.
