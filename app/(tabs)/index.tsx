@@ -1,24 +1,32 @@
 import { Link } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-const sections = [
-  { title: '메인 배너', description: '이번 주 추천 도서를 배너로 노출합니다.' },
-  { title: '신규 도서', description: '최근 등록된 도서 카드 목록입니다.' },
-  { title: '추천 도서', description: '연령/주제 기반 추천 목록입니다.' },
-  { title: '이벤트', description: '프로모션 및 기획전 영역입니다.' },
-];
+import { HomeSectionCard } from '../../src/features/home/components/HomeSectionCard';
+import { useHomeFeedQuery } from '../../src/features/home/hooks/useHomeFeedQuery';
 
 export default function HomeScreen() {
+  const homeFeedQuery = useHomeFeedQuery();
+
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.title}>보고팡 B2C 홈</Text>
-      <Text style={styles.subtitle}>피그마 구조를 기준으로 초기 홈 섹션 골격을 잡아둔 상태입니다.</Text>
+      <Text style={styles.subtitle}>피그마 기준 섹션 컴포넌트와 데이터 레이어를 연결한 초기 상태입니다.</Text>
 
-      {sections.map((section) => (
-        <View key={section.title} style={styles.card}>
-          <Text style={styles.cardTitle}>{section.title}</Text>
-          <Text style={styles.cardText}>{section.description}</Text>
+      {homeFeedQuery.isLoading ? (
+        <View style={styles.loadingBox}>
+          <ActivityIndicator size="small" color="#2563EB" />
+          <Text style={styles.loadingText}>홈 데이터를 불러오는 중...</Text>
         </View>
+      ) : null}
+
+      {homeFeedQuery.isError ? (
+        <View style={styles.errorBox}>
+          <Text style={styles.errorText}>데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</Text>
+        </View>
+      ) : null}
+
+      {homeFeedQuery.data?.sections.map((section) => (
+        <HomeSectionCard key={section.id} title={section.title} description={section.description} />
       ))}
 
       <Link href="/book/sample-001" style={styles.cta}>
@@ -48,23 +56,33 @@ const styles = StyleSheet.create({
     color: '#475569',
     marginBottom: 4,
   },
-  card: {
-    borderRadius: 16,
-    backgroundColor: '#FFFFFF',
-    padding: 16,
+  loadingBox: {
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    backgroundColor: '#EFF6FF',
     borderWidth: 1,
-    borderColor: '#E2E8F0',
+    borderColor: '#BFDBFE',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#1E293B',
-    marginBottom: 6,
+  loadingText: {
+    color: '#1D4ED8',
+    fontSize: 13,
   },
-  cardText: {
+  errorBox: {
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    backgroundColor: '#FEF2F2',
+    borderWidth: 1,
+    borderColor: '#FECACA',
+  },
+  errorText: {
+    color: '#991B1B',
     fontSize: 13,
     lineHeight: 18,
-    color: '#64748B',
   },
   cta: {
     marginTop: 8,
