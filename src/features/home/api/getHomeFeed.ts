@@ -1,4 +1,20 @@
-import type { HomeFeed } from '../types/homeFeed';
+import { MOCK_BOOKS } from '../../books/data/mockBooks';
+import type { HomeBook, HomeFeed } from '../types/homeFeed';
+
+function toHomeBook(id: string): HomeBook {
+  const book = MOCK_BOOKS.find((item) => item.id === id);
+
+  if (!book) {
+    throw new Error(`Missing mock book: ${id}`);
+  }
+
+  return {
+    id: book.id,
+    title: book.title,
+    author: book.author,
+    ageRange: book.ageRange,
+  };
+}
 
 const MOCK_HOME_FEED: HomeFeed = {
   updatedAt: new Date().toISOString(),
@@ -26,27 +42,14 @@ const MOCK_HOME_FEED: HomeFeed = {
       type: 'new-books',
       title: '신규 도서',
       description: '최근 등록된 도서 목록입니다.',
-      books: [
-        { id: 'book-101', title: '일리어드', author: '글 작가 / 그림 작가', ageRange: '4 ~ 5세 과정' },
-        {
-          id: 'book-102',
-          title: '최고를 꿈꾼 사람들의 이야기',
-          author: '글 작가 / 그림 작가',
-          ageRange: '5 ~ 7세 과정',
-        },
-        { id: 'book-103', title: '만화 삼국지 도원결의', author: '글 작가 / 그림 작가', ageRange: '6 ~ 8세 과정' },
-      ],
+      books: ['book-101', 'book-102', 'book-103'].map(toHomeBook),
     },
     {
       id: 'sec-recommended-books',
       type: 'recommended-books',
       title: '추천 도서',
       description: '연령/주제 기반 추천 목록입니다.',
-      books: [
-        { id: 'book-201', title: '100 시리즈', author: '보고팡 출판', ageRange: '5 ~ 7세 과정' },
-        { id: 'book-202', title: '함께하는 문화', author: '보고팡 출판', ageRange: '6 ~ 8세 과정' },
-        { id: 'book-203', title: '예술 · 감각', author: '보고팡 출판', ageRange: '4 ~ 6세 과정' },
-      ],
+      books: ['book-104', 'book-105', 'book-201'].map(toHomeBook),
     },
     {
       id: 'sec-events',

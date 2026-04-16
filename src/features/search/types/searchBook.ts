@@ -1,9 +1,3 @@
-import type { AppMode } from '../../mode/context/AppModeProvider';
+import type { Book } from '../../books/types/book';
 
-export type SearchBook = {
-  id: string;
-  title: string;
-  author: string;
-  ageRange: string;
-  allowedModes: AppMode[];
-};
+export type SearchBook = Book;

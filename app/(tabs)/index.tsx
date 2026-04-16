@@ -29,7 +29,7 @@ export default function HomeScreen() {
         <HomeSectionCard key={section.id} section={section} />
       ))}
 
-      <Link href="/book/sample-001" style={styles.cta}>
+      <Link href="/book/book-101" style={styles.cta}>
         도서 상세 샘플로 이동
       </Link>
     </ScrollView>
