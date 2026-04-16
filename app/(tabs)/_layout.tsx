@@ -1,7 +1,11 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 
+import { useAppMode } from '../../src/features/mode/context/AppModeProvider';
+
 export default function TabsLayout() {
+  const { isKidsMode } = useAppMode();
+
   return (
     <Tabs
       screenOptions={({ route }) => ({
@@ -25,10 +29,22 @@ export default function TabsLayout() {
         },
       })}
     >
-      <Tabs.Screen name="index" options={{ title: '홈', headerTitle: '보고팡' }} />
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: '홈',
+          headerTitle: isKidsMode ? '보고팡 키즈모드' : '보고팡 보호자모드',
+        }}
+      />
       <Tabs.Screen name="search" options={{ title: '검색', headerTitle: '도서 검색' }} />
       <Tabs.Screen name="library" options={{ title: '내서재', headerTitle: '읽기 목록' }} />
-      <Tabs.Screen name="more" options={{ title: '더보기', headerTitle: '보호자용' }} />
+      <Tabs.Screen
+        name="more"
+        options={{
+          title: '더보기',
+          headerTitle: isKidsMode ? '키즈 설정' : '보호자 설정',
+        }}
+      />
     </Tabs>
   );
 }
