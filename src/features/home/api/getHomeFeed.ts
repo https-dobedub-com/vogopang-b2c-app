@@ -13,6 +13,7 @@ function toHomeBook(id: string): HomeBook {
     title: book.title,
     author: book.author,
     ageRange: book.ageRange,
+    category: book.category,
   };
 }
 

@@ -12,6 +12,7 @@ export type HomeBook = {
   title: string;
   author: string;
   ageRange: string;
+  category: string;
 };
 
 export type HomeEvent = {

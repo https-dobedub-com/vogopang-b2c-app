@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import type { HomeSection } from '../types/homeFeed';
+import type { HomeBook, HomeSection } from '../types/homeFeed';
 
 type HomeSectionCardProps = {
   section: HomeSection;
@@ -33,11 +33,7 @@ export function HomeSectionCard({ section }: HomeSectionCardProps) {
 
         <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.horizontalList}>
           {section.books.map((book) => (
-            <Link key={book.id} href={`/book/${book.id}`} style={styles.bookCard}>
-              <Text style={styles.bookTitle}>{book.title}</Text>
-              <Text style={styles.bookMeta}>{book.author}</Text>
-              <Text style={styles.bookMeta}>{book.ageRange}</Text>
-            </Link>
+            <BookShelfCard key={book.id} book={book} />
           ))}
         </ScrollView>
       </View>
@@ -61,6 +57,24 @@ export function HomeSectionCard({ section }: HomeSectionCardProps) {
   return null;
 }
 
+function BookShelfCard({ book }: { book: HomeBook }) {
+  return (
+    <Link href={`/book/${book.id}`} asChild>
+      <Pressable style={styles.bookCard} accessibilityRole="button" accessibilityLabel={`${book.title} 상세 보기`}>
+        <View style={styles.bookCover}>
+          <Text style={styles.bookCategory}>{book.category}</Text>
+          <Text style={styles.bookCoverTitle}>{book.title}</Text>
+        </View>
+        <View style={styles.bookInfo}>
+          <Text style={styles.bookTitle}>{book.title}</Text>
+          <Text style={styles.bookMeta}>{book.author}</Text>
+          <Text style={styles.bookMeta}>{book.ageRange}</Text>
+        </View>
+      </Pressable>
+    </Link>
+  );
+}
+
 const styles = StyleSheet.create({
   sectionWrap: {
     gap: 8,
@@ -81,7 +95,7 @@ const styles = StyleSheet.create({
   },
   bannerCard: {
     width: 290,
-    borderRadius: 18,
+    borderRadius: 8,
     padding: 16,
     backgroundColor: '#0F172A',
     borderWidth: 1,
@@ -95,7 +109,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     paddingHorizontal: 8,
     paddingVertical: 4,
-    borderRadius: 999,
+    borderRadius: 6,
     marginBottom: 10,
   },
   bannerTitle: {
@@ -110,28 +124,52 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   bookCard: {
-    width: 175,
-    borderRadius: 14,
+    width: 142,
+    borderRadius: 8,
     backgroundColor: '#FFFFFF',
     borderWidth: 1,
     borderColor: '#E2E8F0',
-    padding: 14,
+    overflow: 'hidden',
+  },
+  bookCover: {
+    height: 132,
+    backgroundColor: '#111827',
+    padding: 10,
     justifyContent: 'space-between',
-    minHeight: 120,
+  },
+  bookCategory: {
+    alignSelf: 'flex-start',
+    borderRadius: 5,
+    backgroundColor: '#EFF6FF',
+    color: '#1D4ED8',
+    fontSize: 10,
+    fontWeight: '700',
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+  },
+  bookCoverTitle: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    lineHeight: 20,
+    fontWeight: '700',
+  },
+  bookInfo: {
+    padding: 10,
+    gap: 4,
   },
   bookTitle: {
     color: '#0F172A',
-    fontSize: 15,
+    fontSize: 14,
+    lineHeight: 18,
     fontWeight: '700',
-    marginBottom: 8,
   },
   bookMeta: {
     color: '#64748B',
-    fontSize: 12,
-    lineHeight: 17,
+    fontSize: 11,
+    lineHeight: 15,
   },
   eventCard: {
-    borderRadius: 14,
+    borderRadius: 8,
     padding: 14,
     borderWidth: 1,
     borderColor: '#E2E8F0',
