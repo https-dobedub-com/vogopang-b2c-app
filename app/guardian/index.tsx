@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { useAppMode } from '../../src/features/mode/context/AppModeProvider';
 
 export default function GuardianScreen() {
-  const { isGuardianMode, isHydrated } = useAppMode();
+  const { isGuardianMode, isGuardianUnlocked, isHydrated } = useAppMode();
 
   if (!isHydrated) {
     return (
@@ -17,6 +17,10 @@ export default function GuardianScreen() {
 
   if (!isGuardianMode) {
     return <Redirect href="/kids" />;
+  }
+
+  if (!isGuardianUnlocked) {
+    return <Redirect href="/guardian/unlock" />;
   }
 
   return (
