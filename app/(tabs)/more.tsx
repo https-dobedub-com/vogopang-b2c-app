@@ -5,12 +5,12 @@ import type { AppMode } from '../../src/features/mode/context/AppModeProvider';
 import { useAppMode } from '../../src/features/mode/context/AppModeProvider';
 
 export default function MoreScreen() {
-  const { mode, setMode } = useAppMode();
+  const { mode, setMode, isGuardianMode } = useAppMode();
 
   return (
     <View style={styles.screen}>
       <Text style={styles.title}>모드 전환</Text>
-      <Text style={styles.text}>현재 모드에 따라 접근 가능한 전용 화면이 분기됩니다.</Text>
+      <Text style={styles.text}>현재 모드에 따라 접근 가능한 전용 화면과 메뉴가 분기됩니다.</Text>
 
       <View style={styles.modeRow}>
         <ModeButton mode="kids" currentMode={mode} onPress={setMode} label="키즈모드" />
@@ -25,6 +25,19 @@ export default function MoreScreen() {
       <Link href="/guardian" style={styles.linkButtonSecondary}>
         보호자 전용 화면으로 이동
       </Link>
+
+      <View style={styles.guardianMenuBox}>
+        <Text style={styles.guardianMenuTitle}>보호자 전용 메뉴</Text>
+        {isGuardianMode ? (
+          <View style={styles.guardianMenuList}>
+            <Text style={styles.guardianMenuItem}>- 학습 리포트 보기</Text>
+            <Text style={styles.guardianMenuItem}>- 이용 시간 관리</Text>
+            <Text style={styles.guardianMenuItem}>- 결제 / 구독 관리</Text>
+          </View>
+        ) : (
+          <Text style={styles.guardianMenuLocked}>키즈모드에서는 보호자 전용 메뉴가 숨겨집니다.</Text>
+        )}
+      </View>
     </View>
   );
 }
@@ -120,5 +133,30 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontWeight: '700',
     backgroundColor: '#FFFFFF',
+  },
+  guardianMenuBox: {
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 12,
+    padding: 12,
+    backgroundColor: '#F8FAFC',
+    gap: 8,
+  },
+  guardianMenuTitle: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#0F172A',
+  },
+  guardianMenuList: {
+    gap: 6,
+  },
+  guardianMenuItem: {
+    fontSize: 13,
+    color: '#334155',
+  },
+  guardianMenuLocked: {
+    fontSize: 13,
+    color: '#64748B',
   },
 });
