@@ -12,6 +12,8 @@ type ReadingListContextValue = {
   isHydrated: boolean;
   isBookSaved: (bookId: string) => boolean;
   toggleBook: (bookId: string) => void;
+  removeBook: (bookId: string) => void;
+  clearList: () => void;
 };
 
 const ReadingListContext = createContext<ReadingListContextValue | null>(null);
@@ -45,15 +47,32 @@ export function ReadingListProvider({ children }: PropsWithChildren) {
     };
   }, []);
 
+  const persistIds = (nextIds: string[]) => {
+    void AsyncStorage.setItem(READING_LIST_STORAGE_KEY, JSON.stringify(nextIds));
+  };
+
   const toggleBook = (bookId: string) => {
     setSavedBookIds((currentIds) => {
       const nextIds = currentIds.includes(bookId)
         ? currentIds.filter((currentId) => currentId !== bookId)
         : [bookId, ...currentIds];
 
-      void AsyncStorage.setItem(READING_LIST_STORAGE_KEY, JSON.stringify(nextIds));
+      persistIds(nextIds);
       return nextIds;
     });
+  };
+
+  const removeBook = (bookId: string) => {
+    setSavedBookIds((currentIds) => {
+      const nextIds = currentIds.filter((currentId) => currentId !== bookId);
+      persistIds(nextIds);
+      return nextIds;
+    });
+  };
+
+  const clearList = () => {
+    setSavedBookIds([]);
+    void AsyncStorage.removeItem(READING_LIST_STORAGE_KEY);
   };
 
   const value = useMemo<ReadingListContextValue>(
@@ -63,6 +82,8 @@ export function ReadingListProvider({ children }: PropsWithChildren) {
       isHydrated,
       isBookSaved: (bookId: string) => savedBookIds.includes(bookId),
       toggleBook,
+      removeBook,
+      clearList,
     }),
     [savedBookIds, isHydrated],
   );

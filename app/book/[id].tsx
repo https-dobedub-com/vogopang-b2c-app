@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { getBookById } from '../../src/features/books/api/getBookById';
 import { useReadingList } from '../../src/features/reading-list/context/ReadingListProvider';
@@ -30,7 +30,7 @@ export default function BookDetailScreen() {
 
   if (!book) {
     return (
-      <View style={styles.screen}>
+      <View style={styles.screenFallback}>
         <Stack.Screen options={{ title: '도서 상세' }} />
         <Text style={styles.title}>도서를 찾을 수 없습니다.</Text>
         <Text style={styles.text}>요청한 도서 정보가 아직 준비되지 않았습니다.</Text>
@@ -39,15 +39,20 @@ export default function BookDetailScreen() {
   }
 
   return (
-    <View style={styles.screen}>
+    <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Stack.Screen options={{ title: book.title }} />
-      <View style={styles.coverPlaceholder}>
-        <Text style={styles.coverText}>{book.category}</Text>
-      </View>
 
-      <Text style={styles.title}>{book.title}</Text>
-      <Text style={styles.meta}>{book.author}</Text>
-      <Text style={styles.meta}>{book.ageRange}</Text>
+      <View style={styles.heroCard}>
+        <View style={styles.coverPlaceholder}>
+          <Text style={styles.coverCategory}>{book.category}</Text>
+          <Text style={styles.coverTitle}>{book.title}</Text>
+        </View>
+        <View style={styles.heroMeta}>
+          <Text style={styles.title}>{book.title}</Text>
+          <Text style={styles.meta}>{book.author}</Text>
+          <Text style={styles.meta}>{book.ageRange}</Text>
+        </View>
+      </View>
 
       <View style={styles.statsRow}>
         <View style={styles.statBox}>
@@ -60,15 +65,17 @@ export default function BookDetailScreen() {
         </View>
       </View>
 
-      <Text style={styles.sectionTitle}>소개</Text>
-      <Text style={styles.text}>{book.summary}</Text>
+      <View style={styles.infoBlock}>
+        <Text style={styles.sectionTitle}>소개</Text>
+        <Text style={styles.text}>{book.summary}</Text>
+      </View>
 
       <Pressable style={[styles.saveButton, isSaved ? styles.saveButtonActive : null]} onPress={() => toggleBook(book.id)}>
         <Text style={[styles.saveButtonText, isSaved ? styles.saveButtonTextActive : null]}>
           {isSaved ? '읽기 목록에서 제거' : '읽기 목록에 추가'}
         </Text>
       </Pressable>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -82,23 +89,51 @@ const styles = StyleSheet.create({
   },
   screen: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  screenFallback: {
+    flex: 1,
     padding: 20,
     backgroundColor: '#FFFFFF',
-    gap: 10,
+    gap: 8,
+  },
+  content: {
+    padding: 20,
+    gap: 14,
+  },
+  heroCard: {
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    overflow: 'hidden',
   },
   coverPlaceholder: {
-    minHeight: 150,
-    borderRadius: 8,
-    backgroundColor: '#EFF6FF',
-    borderWidth: 1,
-    borderColor: '#BFDBFE',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 6,
+    minHeight: 178,
+    backgroundColor: '#111827',
+    padding: 18,
+    justifyContent: 'flex-end',
   },
-  coverText: {
+  coverCategory: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#EFF6FF',
     color: '#1D4ED8',
+    fontSize: 12,
     fontWeight: '700',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 6,
+    marginBottom: 10,
+  },
+  coverTitle: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontWeight: '700',
+    lineHeight: 30,
+  },
+  heroMeta: {
+    padding: 14,
+    gap: 4,
   },
   title: {
     fontSize: 24,
@@ -112,7 +147,6 @@ const styles = StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     gap: 8,
-    marginTop: 8,
   },
   statBox: {
     flex: 1,
@@ -132,11 +166,18 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 4,
   },
+  infoBlock: {
+    borderRadius: 8,
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    padding: 14,
+    gap: 8,
+  },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
     color: '#0F172A',
-    marginTop: 8,
   },
   text: {
     fontSize: 14,
@@ -148,7 +189,6 @@ const styles = StyleSheet.create({
     color: '#64748B',
   },
   saveButton: {
-    marginTop: 10,
     borderRadius: 12,
     backgroundColor: '#111827',
     paddingVertical: 13,
