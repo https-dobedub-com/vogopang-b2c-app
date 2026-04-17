@@ -1,5 +1,20 @@
 import type { Book } from '../types/book';
 
+function createEpisodes(bookId: string, count: number, seedTitles: string[]) {
+  return Array.from({ length: count }, (_, index) => {
+    const episodeNumber = index + 1;
+    const title = seedTitles[index] ?? `${episodeNumber}화. 이어지는 이야기`;
+
+    return {
+      id: `${bookId}-episode-${episodeNumber}`,
+      title,
+      summary: `${title}를 아이 눈높이에 맞춘 짧은 읽기 흐름으로 구성했습니다.`,
+      durationMinutes: 6 + (index % 4),
+      isFree: index === 0,
+    };
+  });
+}
+
 export const MOCK_BOOKS: Book[] = [
   {
     id: 'book-101',
@@ -11,6 +26,12 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 8,
     readerCount: 128,
     allowedModes: ['kids', 'guardian'],
+    episodes: createEpisodes('book-101', 8, [
+      '1화. 불화의 시작',
+      '2화. 영웅 아킬레우스',
+      '3화. 트로이 성 앞에서',
+      '4화. 친구를 위한 선택',
+    ]),
   },
   {
     id: 'book-102',
@@ -22,6 +43,12 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 12,
     readerCount: 232,
     allowedModes: ['kids', 'guardian'],
+    episodes: createEpisodes('book-102', 12, [
+      '1화. 꿈을 적어본 날',
+      '2화. 포기하지 않는 마음',
+      '3화. 작은 성공의 힘',
+      '4화. 함께 이룬 도전',
+    ]),
   },
   {
     id: 'book-103',
@@ -33,6 +60,7 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 2,
     readerCount: 56,
     allowedModes: ['kids', 'guardian'],
+    episodes: createEpisodes('book-103', 2, ['1화. 세 영웅의 만남', '2화. 도원에서 맺은 약속']),
   },
   {
     id: 'book-104',
@@ -44,6 +72,12 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 10,
     readerCount: 310,
     allowedModes: ['kids', 'guardian'],
+    episodes: createEpisodes('book-104', 10, [
+      '1화. 올림포스의 신들',
+      '2화. 제우스의 번개',
+      '3화. 아테나의 지혜',
+      '4화. 헤라클레스의 첫 모험',
+    ]),
   },
   {
     id: 'book-105',
@@ -55,6 +89,12 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 20,
     readerCount: 145,
     allowedModes: ['kids', 'guardian'],
+    episodes: createEpisodes('book-105', 20, [
+      '1화. 숫자 1부터 10까지',
+      '2화. 짝수와 홀수',
+      '3화. 모양을 세어봐요',
+      '4화. 비교하고 분류하기',
+    ]),
   },
   {
     id: 'book-201',
@@ -66,6 +106,12 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 7,
     readerCount: 82,
     allowedModes: ['kids', 'guardian'],
+    episodes: createEpisodes('book-201', 7, [
+      '1화. 서로 다른 인사',
+      '2화. 함께 먹는 밥상',
+      '3화. 축제를 준비해요',
+      '4화. 다름을 이해하는 법',
+    ]),
   },
   {
     id: 'book-202',
@@ -77,6 +123,12 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 9,
     readerCount: 91,
     allowedModes: ['kids', 'guardian'],
+    episodes: createEpisodes('book-202', 9, [
+      '1화. 색을 만나는 날',
+      '2화. 소리를 따라가요',
+      '3화. 선과 모양 놀이',
+      '4화. 내 마음의 색깔',
+    ]),
   },
   {
     id: 'book-301',
@@ -88,6 +140,12 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 4,
     readerCount: 64,
     allowedModes: ['guardian'],
+    episodes: createEpisodes('book-301', 4, [
+      '1장. 우리 아이 독서 루틴 진단',
+      '2장. 읽기 습관을 만드는 환경',
+      '3장. 보호자의 질문법',
+      '4장. 일주일 루틴 설계',
+    ]),
   },
   {
     id: 'book-302',
@@ -99,5 +157,10 @@ export const MOCK_BOOKS: Book[] = [
     episodeCount: 3,
     readerCount: 38,
     allowedModes: ['guardian'],
+    episodes: createEpisodes('book-302', 3, [
+      '1장. 리포트 핵심 지표',
+      '2장. 관심 카테고리 해석',
+      '3장. 다음 추천으로 연결하기',
+    ]),
   },
 ];

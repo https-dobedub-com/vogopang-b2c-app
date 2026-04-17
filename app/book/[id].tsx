@@ -70,6 +70,31 @@ export default function BookDetailScreen() {
         <Text style={styles.text}>{book.summary}</Text>
       </View>
 
+      <View style={styles.episodeSection}>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionTitle}>에피소드</Text>
+          <Text style={styles.sectionCaption}>{book.episodes.length}개</Text>
+        </View>
+
+        {book.episodes.map((episode, index) => (
+          <View key={episode.id} style={styles.episodeCard}>
+            <View style={styles.episodeNumber}>
+              <Text style={styles.episodeNumberText}>{index + 1}</Text>
+            </View>
+            <View style={styles.episodeContent}>
+              <View style={styles.episodeTitleRow}>
+                <Text style={styles.episodeTitle}>{episode.title}</Text>
+                <Text style={[styles.episodeBadge, episode.isFree ? styles.episodeBadgeFree : styles.episodeBadgeLocked]}>
+                  {episode.isFree ? '무료' : '준비중'}
+                </Text>
+              </View>
+              <Text style={styles.episodeSummary}>{episode.summary}</Text>
+              <Text style={styles.episodeMeta}>약 {episode.durationMinutes}분 읽기</Text>
+            </View>
+          </View>
+        ))}
+      </View>
+
       <Pressable style={[styles.saveButton, isSaved ? styles.saveButtonActive : null]} onPress={() => toggleBook(book.id)}>
         <Text style={[styles.saveButtonText, isSaved ? styles.saveButtonTextActive : null]}>
           {isSaved ? '읽기 목록에서 제거' : '읽기 목록에 추가'}
@@ -174,10 +199,94 @@ const styles = StyleSheet.create({
     padding: 14,
     gap: 8,
   },
+  episodeSection: {
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    backgroundColor: '#FFFFFF',
+    padding: 14,
+    gap: 10,
+  },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: 8,
+  },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
     color: '#0F172A',
+  },
+  sectionCaption: {
+    color: '#64748B',
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  episodeCard: {
+    flexDirection: 'row',
+    gap: 10,
+    borderRadius: 8,
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    padding: 12,
+  },
+  episodeNumber: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: '#111827',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  episodeNumberText: {
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 12,
+  },
+  episodeContent: {
+    flex: 1,
+    gap: 5,
+  },
+  episodeTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    gap: 8,
+  },
+  episodeTitle: {
+    flex: 1,
+    color: '#0F172A',
+    fontSize: 14,
+    lineHeight: 19,
+    fontWeight: '700',
+  },
+  episodeBadge: {
+    borderRadius: 5,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    fontSize: 10,
+    fontWeight: '700',
+    overflow: 'hidden',
+  },
+  episodeBadgeFree: {
+    backgroundColor: '#DBEAFE',
+    color: '#1D4ED8',
+  },
+  episodeBadgeLocked: {
+    backgroundColor: '#E2E8F0',
+    color: '#475569',
+  },
+  episodeSummary: {
+    color: '#475569',
+    fontSize: 12,
+    lineHeight: 17,
+  },
+  episodeMeta: {
+    color: '#64748B',
+    fontSize: 11,
+    fontWeight: '700',
   },
   text: {
     fontSize: 14,
