@@ -29,6 +29,9 @@ export default function MoreScreen() {
       <Link href={isGuardianUnlocked ? '/guardian' : '/guardian/unlock'} style={styles.linkButtonSecondary}>
         보호자 전용 화면으로 이동
       </Link>
+      <Link href="/player/101/777" style={styles.linkButtonPlayer}>
+        플레이어 샘플 열기
+      </Link>
 
       <View style={styles.guardianMenuBox}>
         <Text style={styles.guardianMenuTitle}>보호자 전용 메뉴</Text>
@@ -118,6 +121,14 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontWeight: '700',
     backgroundColor: '#FFFFFF',
+  },
+  linkButtonPlayer: {
+    borderRadius: 12,
+    backgroundColor: '#2563EB',
+    color: '#FFFFFF',
+    textAlign: 'center',
+    paddingVertical: 12,
+    fontWeight: '800',
   },
   guardianMenuBox: {
     marginTop: 8,
