@@ -12,7 +12,7 @@ import {
 export type AppMode = 'kids' | 'guardian';
 
 const APP_MODE_STORAGE_KEY = 'vogopang:app-mode';
-const GUARDIAN_PIN = '0420';
+const GUARDIAN_PIN = process.env.EXPO_PUBLIC_GUARDIAN_PIN?.trim();
 
 type AppModeContextValue = {
   mode: AppMode;
@@ -66,7 +66,7 @@ export function AppModeProvider({ children }: PropsWithChildren) {
 
   const requestGuardianAccess = useCallback((pin: string) => {
     const normalizedPin = pin.trim();
-    const isValid = normalizedPin === GUARDIAN_PIN;
+    const isValid = Boolean(GUARDIAN_PIN) && normalizedPin === GUARDIAN_PIN;
 
     if (isValid) {
       setModeState('guardian');

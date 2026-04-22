@@ -18,6 +18,7 @@ import { getBookById } from '../../src/features/books/api/getBookById';
 import type { Book, BookEpisode } from '../../src/features/books/types/book';
 import { useAppMode } from '../../src/features/mode/context/AppModeProvider';
 import { useReadingList } from '../../src/features/reading-list/context/ReadingListProvider';
+import { queryKeys } from '../../src/lib/queryKeys';
 
 type BookTile = {
   id: string;
@@ -76,7 +77,7 @@ export default function BookDetailScreen() {
   const { isBookSaved, toggleBook } = useReadingList();
 
   const bookQuery = useQuery({
-    queryKey: ['book-detail', bookId],
+    queryKey: queryKeys.bookDetail(bookId),
     queryFn: () => getBookById(bookId),
     enabled: Boolean(bookId),
   });
@@ -92,6 +93,21 @@ export default function BookDetailScreen() {
         <View style={styles.centerScreen}>
           <ActivityIndicator size="small" color="#6503F8" />
           <Text style={styles.helperText}>도서 정보를 불러오는 중...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (bookQuery.isError) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <View style={styles.screenFallback}>
+          <Text style={styles.fallbackTitle}>도서 정보를 불러오지 못했습니다.</Text>
+          <Text style={styles.helperText}>잠시 후 다시 시도해주세요.</Text>
+          <Pressable style={styles.fallbackButton} accessibilityRole="button" onPress={() => bookQuery.refetch()}>
+            <Text style={styles.fallbackButtonText}>다시 시도</Text>
+          </Pressable>
         </View>
       </SafeAreaView>
     );

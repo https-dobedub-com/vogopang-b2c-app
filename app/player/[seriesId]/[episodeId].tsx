@@ -4,6 +4,7 @@ import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { getSamplePlayerInfo } from '../../../src/features/player/api/getSamplePlayerInfo';
 import { PlayerScreen } from '../../../src/features/player/components/PlayerScreen';
+import { queryKeys } from '../../../src/lib/queryKeys';
 
 export default function PlayerRouteScreen() {
   const { seriesId, episodeId } = useLocalSearchParams<{ seriesId: string; episodeId: string }>();
@@ -13,9 +14,19 @@ export default function PlayerRouteScreen() {
   const resolvedEpisodeId = Number.isFinite(numericEpisodeId) ? numericEpisodeId : 781;
 
   const playerQuery = useQuery({
-    queryKey: ['sample-player-info', resolvedSeriesId, resolvedEpisodeId],
+    queryKey: queryKeys.playerInfo(resolvedSeriesId, resolvedEpisodeId),
     queryFn: () => getSamplePlayerInfo(resolvedSeriesId, resolvedEpisodeId),
   });
+
+  if (playerQuery.isError) {
+    return (
+      <View style={styles.centerScreen}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <Text style={styles.title}>플레이어 데이터를 불러오지 못했습니다.</Text>
+        <Text style={styles.text}>네트워크 상태를 확인한 뒤 다시 시도해주세요.</Text>
+      </View>
+    );
+  }
 
   if (playerQuery.isLoading || !playerQuery.data) {
     return (
@@ -48,6 +59,13 @@ const styles = StyleSheet.create({
     color: '#64748B',
     fontSize: 14,
     lineHeight: 20,
+    textAlign: 'center',
+  },
+  title: {
+    color: '#0F172A',
+    fontSize: 17,
+    fontWeight: '700',
+    lineHeight: 24,
     textAlign: 'center',
   },
 });

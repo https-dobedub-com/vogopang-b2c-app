@@ -70,7 +70,7 @@ export default function GuardianUnlockScreen() {
         </Pressable>
       </View>
 
-      <Text style={styles.hint}>데모 PIN: 0420</Text>
+      <Text style={styles.hint}>보호자 PIN은 운영 설정을 따릅니다.</Text>
     </View>
   );
 }
