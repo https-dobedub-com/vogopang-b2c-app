@@ -3,15 +3,18 @@ import { Link } from 'expo-router';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import type { Book } from '../../src/features/books/types/book';
+import { useAppMode } from '../../src/features/mode/context/AppModeProvider';
 import { useReadingList } from '../../src/features/reading-list/context/ReadingListProvider';
 
 type SortMode = 'recent' | 'title';
 
 export default function LibraryScreen() {
   const { savedBooks, savedBookIds, isHydrated, removeBook, clearList } = useReadingList();
+  const { mode } = useAppMode();
   const [sortMode, setSortMode] = useState<SortMode>('recent');
 
-  const visibleBooks = sortBooks(savedBooks, savedBookIds, sortMode);
+  const modeBooks = savedBooks.filter((book) => book.allowedModes.includes(mode));
+  const visibleBooks = sortBooks(modeBooks, savedBookIds, sortMode);
 
   if (!isHydrated) {
     return (

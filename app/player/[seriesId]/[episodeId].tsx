@@ -9,23 +9,13 @@ export default function PlayerRouteScreen() {
   const { seriesId, episodeId } = useLocalSearchParams<{ seriesId: string; episodeId: string }>();
   const numericSeriesId = Number(seriesId);
   const numericEpisodeId = Number(episodeId);
-  const canLoad = Number.isFinite(numericSeriesId) && Number.isFinite(numericEpisodeId);
+  const resolvedSeriesId = Number.isFinite(numericSeriesId) ? numericSeriesId : 101;
+  const resolvedEpisodeId = Number.isFinite(numericEpisodeId) ? numericEpisodeId : 781;
 
   const playerQuery = useQuery({
-    queryKey: ['sample-player-info', numericSeriesId, numericEpisodeId],
-    queryFn: () => getSamplePlayerInfo(numericSeriesId, numericEpisodeId),
-    enabled: canLoad,
+    queryKey: ['sample-player-info', resolvedSeriesId, resolvedEpisodeId],
+    queryFn: () => getSamplePlayerInfo(resolvedSeriesId, resolvedEpisodeId),
   });
-
-  if (!canLoad) {
-    return (
-      <View style={styles.centerScreen}>
-        <Stack.Screen options={{ title: '플레이어' }} />
-        <Text style={styles.title}>플레이어 경로가 올바르지 않습니다.</Text>
-        <Text style={styles.text}>예시 경로는 /player/101/777 입니다.</Text>
-      </View>
-    );
-  }
 
   if (playerQuery.isLoading || !playerQuery.data) {
     return (
@@ -53,12 +43,6 @@ const styles = StyleSheet.create({
     gap: 10,
     padding: 24,
     backgroundColor: '#FFFFFF',
-  },
-  title: {
-    color: '#0F172A',
-    fontSize: 18,
-    fontWeight: '800',
-    textAlign: 'center',
   },
   text: {
     color: '#64748B',

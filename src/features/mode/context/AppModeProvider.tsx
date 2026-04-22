@@ -37,10 +37,12 @@ export function AppModeProvider({ children }: PropsWithChildren) {
     async function hydrateMode() {
       try {
         const storedMode = await AsyncStorage.getItem(APP_MODE_STORAGE_KEY);
-        if (storedMode === 'kids' || storedMode === 'guardian') {
+        if (storedMode === 'kids') {
           if (isMounted) {
             setModeState(storedMode);
           }
+        } else if (storedMode === 'guardian') {
+          await AsyncStorage.setItem(APP_MODE_STORAGE_KEY, 'kids');
         }
       } finally {
         if (isMounted) {
@@ -69,7 +71,6 @@ export function AppModeProvider({ children }: PropsWithChildren) {
     if (isValid) {
       setModeState('guardian');
       setIsGuardianUnlocked(true);
-      void AsyncStorage.setItem(APP_MODE_STORAGE_KEY, 'guardian');
       return true;
     }
 

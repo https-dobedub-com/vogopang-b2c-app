@@ -21,6 +21,7 @@ export default function TabsLayout() {
           const icons: Record<string, keyof typeof Ionicons.glyphMap> = {
             index: 'home-outline',
             search: 'search-outline',
+            events: 'calendar-outline',
             library: 'book-outline',
             more: 'menu-outline',
           };
@@ -34,9 +35,15 @@ export default function TabsLayout() {
         options={{
           title: '홈',
           headerTitle: isKidsMode ? '보고팡 키즈모드' : '보고팡 보호자모드',
+          headerShown: false,
+          tabBarStyle: { display: 'none' },
         }}
       />
-      <Tabs.Screen name="search" options={{ title: '검색', headerTitle: '도서 검색' }} />
+      <Tabs.Screen name="search" options={{ title: '검색', headerShown: false, tabBarStyle: { display: 'none' } }} />
+      <Tabs.Screen
+        name="events"
+        options={{ title: '이벤트', headerShown: false, tabBarStyle: { display: 'none' }, href: null }}
+      />
       <Tabs.Screen name="library" options={{ title: '내서재', headerTitle: '읽기 목록' }} />
       <Tabs.Screen
         name="more"

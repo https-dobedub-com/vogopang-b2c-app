@@ -1,10 +1,16 @@
-import { Redirect } from 'expo-router';
+import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 
 import { useAppMode } from '../../src/features/mode/context/AppModeProvider';
 
 export default function KidsScreen() {
-  const { isKidsMode, isHydrated } = useAppMode();
+  const { enterKidsMode, isKidsMode, isHydrated } = useAppMode();
+
+  useEffect(() => {
+    if (isHydrated && !isKidsMode) {
+      enterKidsMode();
+    }
+  }, [enterKidsMode, isHydrated, isKidsMode]);
 
   if (!isHydrated) {
     return (
@@ -16,7 +22,12 @@ export default function KidsScreen() {
   }
 
   if (!isKidsMode) {
-    return <Redirect href="/guardian" />;
+    return (
+      <View style={styles.loadingScreen}>
+        <ActivityIndicator size="small" color="#2563EB" />
+        <Text style={styles.loadingText}>키즈모드로 전환하는 중...</Text>
+      </View>
+    );
   }
 
   return (

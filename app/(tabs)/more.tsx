@@ -6,6 +6,13 @@ import { useAppMode } from '../../src/features/mode/context/AppModeProvider';
 export default function MoreScreen() {
   const { mode, enterKidsMode, isGuardianMode, isGuardianUnlocked } = useAppMode();
   const router = useRouter();
+  const handleKidsModePress = () => {
+    enterKidsMode();
+    router.replace('/');
+  };
+  const handleGuardianModePress = () => {
+    router.push(isGuardianUnlocked ? '/guardian' : '/guardian/unlock');
+  };
 
   return (
     <View style={styles.screen}>
@@ -13,11 +20,11 @@ export default function MoreScreen() {
       <Text style={styles.text}>보호자 모드 진입은 PIN 인증이 필요합니다.</Text>
 
       <View style={styles.modeRow}>
-        <Pressable style={styles.modeButtonKids} onPress={enterKidsMode}>
+        <Pressable style={styles.modeButtonKids} onPress={handleKidsModePress}>
           <Text style={styles.modeButtonKidsText}>키즈모드로 전환</Text>
         </Pressable>
-        <Pressable style={styles.modeButtonGuardian} onPress={() => router.push('/guardian/unlock')}>
-          <Text style={styles.modeButtonGuardianText}>보호자 PIN 인증</Text>
+        <Pressable style={styles.modeButtonGuardian} onPress={handleGuardianModePress}>
+          <Text style={styles.modeButtonGuardianText}>{isGuardianUnlocked ? '보호자 화면 열기' : '보호자 PIN 인증'}</Text>
         </Pressable>
       </View>
 
